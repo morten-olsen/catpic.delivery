@@ -124,4 +124,4 @@ var r,e;module.exports=require("./factoryWithThrowingShims")();
 },{"react":"HdMw","./containers/Welcome":"iwrI","./containers/Connected":"B5Fk","./hooks/useConnection":"oCkq"}],"OGgv":[function(require,module,exports) {
 "use strict";var e=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(exports,"__esModule",{value:!0});const t=e(require("react")),r=require("react-dom"),n=require("./contexts/ConnectionContext"),o=e(require("./App")),u=document.getElementById("root"),l=t.default.createElement(n.ConnectionProvider,null,t.default.createElement(o.default,null));r.render(l,u);
 },{"react":"HdMw","react-dom":"X9zx","./contexts/ConnectionContext":"d4le","./App":"Ru8j"}]},{},["OGgv"], null)
-//# sourceMappingURL=/src.e6eed49f.js.map
+//# sourceMappingURL=src.e6eed49f.js.map
