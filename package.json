@@ -4,7 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "build": "parcel build index.html"
+    "build": "parcel build --public-url '.' index.html"
   },
   "devDependencies": {
     "@types/react": "^17.0.9",
