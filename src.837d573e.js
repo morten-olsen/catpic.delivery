@@ -126,30 +126,26 @@ var r,e;module.exports=require("./factoryWithThrowingShims")();
 },{"react":"HdMw","prop-types":"Iix9","./getDeviceId":"eYSS","./havePropsChanged":"kwuj","./createBlob":"vMHJ","webrtc-adapter":"WzOL"}],"oCkq":[function(require,module,exports) {
 "use strict";var e=this&&this.__createBinding||(Object.create?function(e,t,n,r){void 0===r&&(r=n),Object.defineProperty(e,r,{enumerable:!0,get:function(){return t[n]}})}:function(e,t,n,r){void 0===r&&(r=n),e[r]=t[n]}),t=this&&this.__setModuleDefault||(Object.create?function(e,t){Object.defineProperty(e,"default",{enumerable:!0,value:t})}:function(e,t){e.default=t}),n=this&&this.__importStar||function(n){if(n&&n.__esModule)return n;var r={};if(null!=n)for(var o in n)"default"!==o&&Object.prototype.hasOwnProperty.call(n,o)&&e(r,n,o);return t(r,n),r};Object.defineProperty(exports,"__esModule",{value:!0}),exports.ConnectionStates=void 0;const r=require("react"),o=n(require("../contexts/ConnectionContext")),i=()=>{return r.useContext(o.default)};exports.ConnectionStates=o.States,exports.default=i;
 },{"react":"HdMw","../contexts/ConnectionContext":"d4le"}],"iwrI":[function(require,module,exports) {
-"use strict";var e=this&&this.__createBinding||(Object.create?function(e,t,n,r){void 0===r&&(r=n),Object.defineProperty(e,r,{enumerable:!0,get:function(){return t[n]}})}:function(e,t,n,r){void 0===r&&(r=n),e[r]=t[n]}),t=this&&this.__setModuleDefault||(Object.create?function(e,t){Object.defineProperty(e,"default",{enumerable:!0,value:t})}:function(e,t){e.default=t}),n=this&&this.__importStar||function(n){if(n&&n.__esModule)return n;var r={};if(null!=n)for(var i in n)"default"!==i&&Object.prototype.hasOwnProperty.call(n,i)&&e(r,n,i);return t(r,n),r},r=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(exports,"__esModule",{value:!0});const i=n(require("react")),l=r(require("styled-components")),a=r(require("react-qr-code")),o=r(require("react-qr-reader")),u=r(require("../hooks/useConnection")),c=l.default.div`
+"use strict";var e=this&&this.__createBinding||(Object.create?function(e,t,n,r){void 0===r&&(r=n),Object.defineProperty(e,r,{enumerable:!0,get:function(){return t[n]}})}:function(e,t,n,r){void 0===r&&(r=n),e[r]=t[n]}),t=this&&this.__setModuleDefault||(Object.create?function(e,t){Object.defineProperty(e,"default",{enumerable:!0,value:t})}:function(e,t){e.default=t}),n=this&&this.__importStar||function(n){if(n&&n.__esModule)return n;var r={};if(null!=n)for(var l in n)"default"!==l&&Object.prototype.hasOwnProperty.call(n,l)&&e(r,n,l);return t(r,n),r},r=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(exports,"__esModule",{value:!0});const l=n(require("react")),i=r(require("styled-components")),a=r(require("react-qr-code")),u=r(require("react-qr-reader")),o=r(require("../hooks/useConnection")),c=i.default.div`
   display: flex;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
   height: 100%;
   flex-direction: column;
-`,d=l.default.div`
+`,d=i.default.div`
   display: flex;
-`,f=l.default.button`
+`,f=i.default.button`
   flex: 1;
   background: transparent;
   border: none;
   padding: 10px;
   font-weight: bold;
   ${e=>e.active?"border-bottom: solid 1px red;":""}
-`,s=l.default.div`
+`,s=i.default.div`
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-`,p=()=>{const{connect:e,clientInfo:t}=u.default(),[n,r]=i.useState("view"),l=i.useCallback(t=>{t&&(r("view"),e(JSON.parse(t)))},[]);return i.default.createElement(c,null,i.default.createElement(d,null,i.default.createElement(f,{active:"view"===n,onClick:()=>r("view")},"View"),i.default.createElement(f,{active:"scan"===n,onClick:()=>r("scan")},"Scan")),i.default.createElement(s,null,"view"===n&&i.default.createElement(a.default,{value:JSON.stringify(t),size:300}),"scan"===n&&i.default.createElement(o.default,{delay:300,onScan:l,onError:e=>{console.error(e)},style:{width:"300px",height:"300px"}})))};exports.default=p;
+`,p=()=>{const{connect:e,clientInfo:t}=o.default(),[n,r]=l.useState("view"),i=l.useCallback(t=>{t&&(r("view"),e(JSON.parse(t)))},[]);return l.default.createElement(c,null,l.default.createElement(d,null,l.default.createElement(f,{active:"view"===n,onClick:()=>r("view")},"View"),l.default.createElement(f,{active:"scan"===n,onClick:()=>r("scan")},"Scan")),l.default.createElement(s,null,"view"===n&&l.default.createElement(a.default,{value:JSON.stringify(t),size:300}),"scan"===n&&l.default.createElement(u.default,{delay:300,onScan:i,onError:e=>{console.error(e)},style:{width:"300px",height:"300px"}})))};exports.default=p;
 },{"react":"HdMw","styled-components":"OuUI","react-qr-code":"iQ9p","react-qr-reader":"eeXo","../hooks/useConnection":"oCkq"}],"naKR":[function(require,module,exports) {
 "use strict";var e=this&&this.__createBinding||(Object.create?function(e,t,r,i){void 0===i&&(i=r),Object.defineProperty(e,i,{enumerable:!0,get:function(){return t[r]}})}:function(e,t,r,i){void 0===i&&(i=r),e[i]=t[r]}),t=this&&this.__setModuleDefault||(Object.create?function(e,t){Object.defineProperty(e,"default",{enumerable:!0,value:t})}:function(e,t){e.default=t}),r=this&&this.__importStar||function(r){if(r&&r.__esModule)return r;var i={};if(null!=r)for(var n in r)"default"!==n&&Object.prototype.hasOwnProperty.call(r,n)&&e(i,r,n);return t(i,r),i},i=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(exports,"__esModule",{value:!0});const n=r(require("react")),a=i(require("styled-components")),o=a.default.div`
   min-width: 90px;
@@ -217,7 +213,7 @@ var r,e;module.exports=require("./factoryWithThrowingShims")();
 `,s=l.default.input`
   flex: 1;
   border: none;
-  font-size: 16px;
+  font-size: 18px;
   height: 30px;
   background: #eee;
   padding: 0 10px;
@@ -237,21 +233,19 @@ var r,e;module.exports=require("./factoryWithThrowingShims")();
   border-radius: 6px;
 `,p=e=>new Promise((t,r)=>{const a=new FileReader;a.onload=(()=>{t({name:e.name,type:e.type,body:a.result})}),a.onerror=(e=>{r(e)}),a.readAsDataURL(e)}),m=({message:e,setMessage:t,onSend:r})=>{const a=n.useCallback(async e=>{const r=await Promise.all(e.map(p));t(e=>({...e,files:[...e.files,...r]}))},[t]),l=n.useCallback(e=>{t(t=>({...t,text:e.target.value}))},[t]),{getRootProps:m,getInputProps:b}=u.useDropzone({onDrop:a});return n.default.createElement(i,null,n.default.createElement(d,null,n.default.createElement(s,{placeholder:"Type a message...",value:e.text,onChange:l}),n.default.createElement("div",{...m()},n.default.createElement("input",{...b()}),n.default.createElement(f,null,"File")),n.default.createElement(f,{onClick:r},"Send")),e.files.length>0&&n.default.createElement(c,null,e.files.map((e,t)=>n.default.createElement(o.default,{key:t,file:e}))))};exports.default=m;
 },{"react":"HdMw","styled-components":"OuUI","react-dropzone":"w4q2","./Preview":"naKR"}],"B5Fk":[function(require,module,exports) {
-"use strict";var e=this&&this.__createBinding||(Object.create?function(e,t,n,l){void 0===l&&(l=n),Object.defineProperty(e,l,{enumerable:!0,get:function(){return t[n]}})}:function(e,t,n,l){void 0===l&&(l=n),e[l]=t[n]}),t=this&&this.__setModuleDefault||(Object.create?function(e,t){Object.defineProperty(e,"default",{enumerable:!0,value:t})}:function(e,t){e.default=t}),n=this&&this.__importStar||function(n){if(n&&n.__esModule)return n;var l={};if(null!=n)for(var r in n)"default"!==r&&Object.prototype.hasOwnProperty.call(n,r)&&e(l,n,r);return t(l,n),l},l=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(exports,"__esModule",{value:!0});const r=n(require("react")),a=l(require("styled-components")),u=l(require("../hooks/useConnection")),o=l(require("../components/Message")),s=l(require("../components/ComposeBar")),i=a.default.div`
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
+"use strict";var e=this&&this.__createBinding||(Object.create?function(e,t,n,l){void 0===l&&(l=n),Object.defineProperty(e,l,{enumerable:!0,get:function(){return t[n]}})}:function(e,t,n,l){void 0===l&&(l=n),e[l]=t[n]}),t=this&&this.__setModuleDefault||(Object.create?function(e,t){Object.defineProperty(e,"default",{enumerable:!0,value:t})}:function(e,t){e.default=t}),n=this&&this.__importStar||function(n){if(n&&n.__esModule)return n;var l={};if(null!=n)for(var r in n)"default"!==r&&Object.prototype.hasOwnProperty.call(n,r)&&e(l,n,r);return t(l,n),l},l=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(exports,"__esModule",{value:!0});const r=n(require("react")),a=l(require("styled-components")),u=l(require("../hooks/useConnection")),s=l(require("../components/Message")),o=l(require("../components/ComposeBar")),i=a.default.div`
   height: 100%;
   display: flex;
   flex-direction: column;
-`,f=a.default.div`
+`,c=a.default.div`
   flex: 1;
   transform: scale(1, -1);
-`,c=()=>{const{send:e,messages:t}=u.default(),[n,l]=r.useState({files:[],text:""}),a=r.useMemo(()=>[...t].reverse(),[t]),c=r.useCallback(()=>{e(n),l({files:[],text:""})},[n]),d=r.useCallback(()=>{location.reload()},[]);return r.default.createElement(i,null,r.default.createElement("button",{onClick:d},"Reset"),r.default.createElement(f,null,a.map(e=>e.content?r.default.createElement(o.default,{self:e.self,message:e.content}):r.default.createElement("div",null,"Loading"))),r.default.createElement(s.default,{onSend:c,message:n,setMessage:l}))};exports.default=c;
+`,f=a.default.div`
+  transform: scale(1, -1);
+`,d=()=>{const{send:e,messages:t}=u.default(),[n,l]=r.useState({files:[],text:""}),a=r.useMemo(()=>[...t].reverse(),[t]),d=r.useCallback(()=>{e(n),l({files:[],text:""})},[n]),m=r.useCallback(()=>{location.reload()},[]);return r.default.createElement(i,null,r.default.createElement("button",{onClick:m},"Reset"),r.default.createElement(c,null,a.map(e=>e.content?r.default.createElement(s.default,{self:e.self,message:e.content}):r.default.createElement(f,null,"Loading ",Math.round(e.current/e.length*100),"%"))),r.default.createElement(o.default,{onSend:d,message:n,setMessage:l}))};exports.default=d;
 },{"react":"HdMw","styled-components":"OuUI","../hooks/useConnection":"oCkq","../components/Message":"NfGh","../components/ComposeBar":"gP4O"}],"Ru8j":[function(require,module,exports) {
 "use strict";var e=this&&this.__createBinding||(Object.create?function(e,t,n,r){void 0===r&&(r=n),Object.defineProperty(e,r,{enumerable:!0,get:function(){return t[n]}})}:function(e,t,n,r){void 0===r&&(r=n),e[r]=t[n]}),t=this&&this.__setModuleDefault||(Object.create?function(e,t){Object.defineProperty(e,"default",{enumerable:!0,value:t})}:function(e,t){e.default=t}),n=this&&this.__importStar||function(n){if(n&&n.__esModule)return n;var r={};if(null!=n)for(var u in n)"default"!==u&&Object.prototype.hasOwnProperty.call(n,u)&&e(r,n,u);return t(r,n),r},r=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(exports,"__esModule",{value:!0});const u=r(require("react")),o=r(require("./containers/Welcome")),i=r(require("./containers/Connected")),a=n(require("./hooks/useConnection")),l=()=>{const{state:e}=a.default();return e===a.ConnectionStates.WAITING?u.default.createElement(o.default,null):e===a.ConnectionStates.CONNECTED?u.default.createElement(i.default,null):u.default.createElement("div",null,"Connected")};exports.default=l;
 },{"react":"HdMw","./containers/Welcome":"iwrI","./containers/Connected":"B5Fk","./hooks/useConnection":"oCkq"}],"OGgv":[function(require,module,exports) {
 "use strict";var e=this&&this.__importDefault||function(e){return e&&e.__esModule?e:{default:e}};Object.defineProperty(exports,"__esModule",{value:!0});const t=e(require("react")),r=require("react-dom"),o=require("./contexts/ConnectionContext"),n=e(require("./App")),u=document.getElementById("root"),l=t.default.createElement(o.ConnectionProvider,null,t.default.createElement(n.default,null));r.render(l,u),module.hot&&module.hot.accept();
 },{"react":"HdMw","react-dom":"X9zx","./contexts/ConnectionContext":"d4le","./App":"Ru8j"}]},{},["OGgv"], null)
-//# sourceMappingURL=src.0f7c7764.js.map
+//# sourceMappingURL=src.837d573e.js.map
