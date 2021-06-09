@@ -29,9 +29,9 @@ const PreviewWrapper = styled.div`
   display: flex;
 `;
 
-const Message: React.FC<Props> = ({ message }) => {
+const Message: React.FC<Props> = ({ message, self }) => {
   return (
-    <Direction self={true}>
+    <Direction self={self}>
       {message.files && message.files.length > 0 && (
         <PreviewWrapper>
           {message.files.map((file, i) => (
@@ -40,7 +40,7 @@ const Message: React.FC<Props> = ({ message }) => {
         </PreviewWrapper>
       )}
       {message.text && (
-        <Wrapper self={true}>
+        <Wrapper self={self}>
           {message.text}
         </Wrapper>
       )}

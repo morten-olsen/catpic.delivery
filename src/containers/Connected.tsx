@@ -43,7 +43,7 @@ const Connected: React.FC<{}> = () => {
       <button onClick={reset}>Reset</button>
       <MessageList>
         {reverseMessages.map((message) => (message.content ? (
-          <Message message={message.content} />
+          <Message self={message.self} message={message.content} />
         ):(
           <div>Loading</div>
         )))}
