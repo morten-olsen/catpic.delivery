@@ -1,6 +1,8 @@
 import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import useConnection from '../hooks/useConnection';
+import FileView from '../components/File';
+import FileGrid from '../components/FileGrid';
 
 const readFile = (file: File) => new Promise((resolve, reject) => {
   const reader = new FileReader();
@@ -38,15 +40,14 @@ const Connected: React.FC<{}> = () => {
       { isDragActive ? (
         <p>Drop the files here ...</p> 
       ):(
-          <p>Drag 'n' drop some files here, or click to select files</p>
+          <p>Drag 'n' drop some files here, or click to select files!</p>
       )}
       </div>
-      {messages.map((message) => (
-        <div>
-          {message.name}-{message.body.length}
-          <img style={{ width: 300, height: 300 }} src={message.body} />
-        </div>
-      ))}
+      <FileGrid>
+        {messages.map((message) => (
+          <FileView name={message.name} type={message.type} src={message.body} />
+        ))}
+      </FileGrid>
     </>
   );
 }
