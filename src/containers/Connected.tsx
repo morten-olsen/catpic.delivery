@@ -8,6 +8,7 @@ const readFile = (file: File) => new Promise((resolve, reject) => {
   const reader = new FileReader();
   reader.onload = () => {
     resolve({
+      mediaType: 'file',
       name: file.name,
       type: file.type,
       body: reader.result,
@@ -45,7 +46,7 @@ const Connected: React.FC<{}> = () => {
       </div>
       <FileGrid>
         {messages.map((message) => (
-          <FileView name={message.name} type={message.type} src={message.body} />
+          <FileView message={message} />
         ))}
       </FileGrid>
     </>

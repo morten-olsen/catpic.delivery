@@ -46,7 +46,6 @@ const Welcome: React.FC<{}> = () => {
     text.select();
     let successful = document.execCommand('copy');
     let msg = successful ? 'successful' : 'unsuccessful';
-    alert('Copy text command was ' + msg);
   }, [linkRef]);
 
   useEffect(() => {

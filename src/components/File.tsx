@@ -2,9 +2,7 @@ import React, { useCallback } from 'react';
 import styled from 'styled-components';
 
 interface Props {
-  name: string;
-  type: string;
-  src: string;
+  message: any;
 }
 
 const Wrapper = styled.div`
@@ -16,7 +14,8 @@ const Wrapper = styled.div`
 `;
 
 const Preview = styled.div`
-  flex: 1
+  flex: 1;
+  background: #eee;
 `;
 
 const Meta = styled.div`
@@ -45,23 +44,34 @@ const getPreview = (type: string, src: string) => {
   );
 };
 
-const File: React.FC<Props> = ({ name, type, src }) => {
+const File: React.FC<Props> = ({ message }) => {
+  const { content } = message;
   const download = useCallback(() => {
     const link = document.createElement("a");
-    link.download = name;
-    link.href = src;
+    link.download = content.name;
+    link.href = content.body;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-  }, [src]);
+  }, [content?.body, content?.name]);
 
+  if (message.type === 'incomplete') {
+    return (
+      <Wrapper>
+        <Preview />
+        <Meta>
+          {Math.round(message.current / message.length * 100)}%
+        </Meta>
+      </Wrapper>
+    );
+  }
   return (
     <Wrapper onClick={download}>
       <Preview>
-        {getPreview(type, src)}
+        {getPreview(content.type, content.body)}
       </Preview>
       <Meta>
-        {name}
+        {content.name}
       </Meta>
     </Wrapper>
   );

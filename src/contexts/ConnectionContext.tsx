@@ -2,6 +2,7 @@ import React, { createContext, useMemo, useState, useCallback, useEffect } from 
 import Peer, { DataConnection } from 'peerjs';
 import { nanoid } from 'nanoid';
 import useCrypto from '../hooks/useCrypto';
+import useMessages from '../hooks/useMessages';
 
 enum States {
   WAITING,
@@ -36,13 +37,24 @@ function dataURItoBlob(dataURI: string) {
 
 const ConnectionContext = createContext<ConnectionContextValue>(undefined as any);
 
+const postProcess = (input: any) => {
+  if (input.mediaType === 'file') {
+    return {
+      ...input,
+      body: dataURItoBlob(input.body),
+    };
+  }
+  return input;
+};
+
 const ConnectionProvider: React.FC = ({ children }) => {
+
+  const { messages, addMessage, formatMessage } = useMessages(postProcess);
   const [secret, setSecret] = useState(nanoid());
   const { encrypt, decrypt } = useCrypto(secret);
   const id = useMemo(() => nanoid(), []);
   const peer = useMemo(() => new Peer(id), [id]);
   const [connection, setConnection] = useState<DataConnection | undefined>(undefined);
-  const [messages, setMessages] = useState<Message[]>([]);
   const [state, setState] = useState<States>(States.WAITING);
   const clientInfo = useMemo(() => ({
     id,
@@ -51,14 +63,14 @@ const ConnectionProvider: React.FC = ({ children }) => {
 
   const send = useCallback(async (message: any) => {
     if (!connection) return;
-    setMessages(current => [
-      ...current,
-      {
-        ...message,
-        body: dataURItoBlob(message.body),
-      },
-    ]);
-    connection.send(await encrypt(message)); 
+    const { startMsg, updateMsgs } = formatMessage(message);
+
+    addMessage(startMsg);
+    connection.send(await encrypt(startMsg)); 
+    for (let updateMsg of updateMsgs) {
+      connection.send(await encrypt(updateMsg));
+      addMessage(updateMsg);
+    }
   }, [connection, encrypt]);
 
   const connect = useCallback(async (clientInfo: any) => {
@@ -68,22 +80,23 @@ const ConnectionProvider: React.FC = ({ children }) => {
       setSecret(clientInfo.secret);
       setState(States.CONNECTED);
       setConnection(newConnection);
-      console.log('connected', newConnection);
     });
   }, [peer]);
 
   useEffect(() => {
+    if (connection) {
+      return;
+    }
     const onConnect = (newConnection: DataConnection) => {
       setState(States.CONNECTED);
       setConnection(newConnection);
-      console.log('connected', newConnection);
     };
     peer.on('connection', onConnect);
 
     return () => {
       peer.off('connection', onConnect);
     };
-  }, [peer]);
+  }, [peer, connection]);
 
   useEffect(() => {
     if (!connection) {
@@ -91,13 +104,7 @@ const ConnectionProvider: React.FC = ({ children }) => {
     }
     const handleData = async (encrypted: any) => {
       const message = await decrypt(encrypted);
-      setMessages(current => [
-        ...current,
-        {
-          ...message,
-          body: dataURItoBlob(message.body),
-        },
-      ]);
+      addMessage(message);
     };
     connection.on('data', handleData);
     return () => {
