@@ -24,7 +24,7 @@ const ComposeArea = styled.div`
 const Input = styled.input`
   flex: 1;
   border: none;
-  font-size: 16px;
+  font-size: 18px;
   height: 30px;
   background: #eee;
   padding: 0 10px;

@@ -6,10 +6,6 @@ import ComposeMessage from '../types/ComposeMessage';
 import ComposeBar from '../components/ComposeBar';
 
 const Wrapper = styled.div`
-  position: fixed;
-  left: 0;
-  top: 0;
-  width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -17,6 +13,10 @@ const Wrapper = styled.div`
 
 const MessageList = styled.div`
   flex: 1;
+  transform: scale(1, -1);
+`;
+
+const Loading = styled.div`
   transform: scale(1, -1);
 `;
 
@@ -45,7 +45,7 @@ const Connected: React.FC<{}> = () => {
         {reverseMessages.map((message) => (message.content ? (
           <Message self={message.self} message={message.content} />
         ):(
-          <div>Loading</div>
+          <Loading>Loading {Math.round(message.current / message.length * 100)}%</Loading>
         )))}
       </MessageList>
       <ComposeBar onSend={onSend} message={currentMessage} setMessage={setCurrentMessage} />
