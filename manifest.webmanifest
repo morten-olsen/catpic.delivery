@@ -1,0 +1,14 @@
+{
+  "short_name": "catpic-delivery",
+  "name": "catpic.delivery",
+  "icons": [
+    {
+      "src": "public/cat.png",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
