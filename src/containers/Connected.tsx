@@ -28,6 +28,10 @@ const Connected: React.FC<{}> = () => {
     files.forEach(send);
   }, [send]);
 
+  const reset = useCallback(() => {
+    location.reload();
+  }, []);
+
   const {
     getRootProps,
     getInputProps,
@@ -49,6 +53,7 @@ const Connected: React.FC<{}> = () => {
           <FileView message={message} />
         ))}
       </FileGrid>
+      <button onClick={reset}>Reset</button>
     </>
   );
 }
