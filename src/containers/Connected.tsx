@@ -1,60 +1,55 @@
-import React, { useCallback } from 'react';
-import { useDropzone } from 'react-dropzone';
+import React, { useCallback, useMemo, useState } from 'react';
+import styled from 'styled-components';
 import useConnection from '../hooks/useConnection';
-import FileView from '../components/File';
-import FileGrid from '../components/FileGrid';
+import Message from '../components/Message';
+import ComposeMessage from '../types/ComposeMessage';
+import ComposeBar from '../components/ComposeBar';
 
-const readFile = (file: File) => new Promise((resolve, reject) => {
-  const reader = new FileReader();
-  reader.onload = () => {
-    resolve({
-      mediaType: 'file',
-      name: file.name,
-      type: file.type,
-      body: reader.result,
-    });
-  };
-  reader.onerror = (err) => {
-    reject(err);
-  };
-  reader.readAsDataURL(file);
-});
+const Wrapper = styled.div`
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+`;
+
+const MessageList = styled.div`
+  flex: 1;
+  transform: scale(1, -1);
+`;
+
 
 const Connected: React.FC<{}> = () => {
   const { send, messages } = useConnection();
+  const [currentMessage, setCurrentMessage] = useState<ComposeMessage>({
+    files: [],
+    text: '',
+  });
+  const reverseMessages = useMemo(() => [...messages].reverse(), [messages]);
 
-  const onDrop = useCallback(async (acceptedFiles: File[]) => {
-    const files = await Promise.all(acceptedFiles.map(readFile));
-    files.forEach(send);
-  }, [send]);
+  const onSend = useCallback(() => {
+    send(currentMessage);
+    setCurrentMessage({ files: [], text: '' });
+  }, [currentMessage])
 
   const reset = useCallback(() => {
     location.reload();
   }, []);
 
-  const {
-    getRootProps,
-    getInputProps,
-    isDragActive,
-  } = useDropzone({onDrop})
-
   return (
-    <>
-      <div {...getRootProps()}>
-      <input {...getInputProps()} />
-      { isDragActive ? (
-        <p>Drop the files here ...</p> 
-      ):(
-          <p>Drag 'n' drop some files here, or click to select files!</p>
-      )}
-      </div>
-      <FileGrid>
-        {messages.map((message) => (
-          <FileView message={message} />
-        ))}
-      </FileGrid>
+    <Wrapper>
       <button onClick={reset}>Reset</button>
-    </>
+      <MessageList>
+        {reverseMessages.map((message) => (message.content ? (
+          <Message message={message.content} />
+        ):(
+          <div>Loading</div>
+        )))}
+      </MessageList>
+      <ComposeBar onSend={onSend} message={currentMessage} setMessage={setCurrentMessage} />
+    </Wrapper>
   );
 }
 

@@ -25,6 +25,7 @@ interface UpdateRequest extends BaseRequest {
 interface BaseMessage {
   id: string;
   type: string;
+  self: boolean;
 }
 
 interface IncompleteMessage extends BaseMessage {
@@ -69,6 +70,7 @@ const updateMessage = (
     return {
       id: message.id,
       type: 'complete',
+      self: message.self,
       content: postProcess(JSON.parse(parts.join(''))), 
     };
   }
@@ -83,12 +85,13 @@ const updateMessage = (
 const useMessages = (postProcess: (input: any) => any) => {
   const [messages, setMessage] = useState<Message[]>([]);
 
-  const addMessage = useCallback((request: Request) => {
+  const addMessage = useCallback((request: Request, self: boolean) => {
     setMessage((current) => {
       if (request.type === 'start-message') {
         const message: IncompleteMessage = {
           id: request.payload.id,
           type: 'incomplete',
+          self,
           length: request.payload.length,
           current: 0,
           parts: [],

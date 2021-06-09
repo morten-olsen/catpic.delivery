@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import styled from 'styled-components';
 import QRCode from 'react-qr-code';
 import QRReader from 'react-qr-reader'
@@ -12,65 +12,65 @@ const Wrapper = styled.div`
   width: 100%;
   height: 100%;
   flex-direction: column;
+`;
+
+const Header = styled.div`
+  display: flex;
+`;
+
+const Button = styled.button<{ active: boolean }>`
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: 10px;
+  font-weight: bold;
+  ${props => props.active ? 'border-bottom: solid 1px red;' : ''}
+`;
+
+const Content = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
 `;
 
-const Link = styled.input`
-  width: 300px;
-  border: none;
-  background: none;
-`;
-
 const Welcome: React.FC<{}> = () => {
-  const linkRef = useRef<any>();
   const { connect, clientInfo } = useConnection();
-  const link = useMemo(
-    () => `${location.protocol}//${location.host}${location.pathname}#${btoa(JSON.stringify(clientInfo))}`,
-    [clientInfo],
-  )
+  const [mode, setMode] = useState<'view' | 'scan'>('view');
 
   const onScan = useCallback(
     (result) => {
       if (result) {
+        setMode('view');
         connect(JSON.parse(result));
       }
     },
     [],
   );
 
-  const copy = useCallback(() => {
-    const text = linkRef.current;
-    if (!text) return;
-    text.focus();
-    text.select();
-    let successful = document.execCommand('copy');
-    let msg = successful ? 'successful' : 'unsuccessful';
-  }, [linkRef]);
-
-  useEffect(() => {
-    const hash = window.location.hash;
-    if (hash) {
-      const clientInfoEncoded = hash.substring(1);
-      const clientInfo = JSON.parse(atob(clientInfoEncoded));
-      connect(clientInfo);
-    }
-    console.log(hash);
-  }, []);
-
   return (
     <Wrapper>
-      <QRCode
-        value={JSON.stringify(clientInfo)}
-        size={300}
-      />
-      <QRReader
-        delay={300}
-        onScan={onScan}
-        onError={(result) => { console.error(result) }}
-        style={{ width: '300px', height: '300px' }}
-      />
-      <Link ref={linkRef} onFocus={copy} value={link} /> 
+      <Header>
+        <Button active={mode==='view'} onClick={() => setMode('view')}>View</Button>
+        <Button active={mode==='scan'} onClick={() => setMode('scan')}>Scan</Button>
+      </Header>
+      <Content>
+        {mode === 'view' && (
+          <QRCode
+            value={JSON.stringify(clientInfo)}
+            size={300}
+          />
+        )}
+        {mode === 'scan' && (
+          <QRReader
+            delay={300}
+            onScan={onScan}
+            onError={(result) => { console.error(result) }}
+            style={{ width: '300px', height: '300px' }}
+          />
+        )}
+      </Content>
     </Wrapper>
   );
 }

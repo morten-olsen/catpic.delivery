@@ -18,12 +18,6 @@ interface ConnectionContextValue {
   connect: (connectionInfo: any) => Promise<void>;
 }
 
-interface Message {
-  id: string;
-  packages: number;
-  content: string;
-}
-
 function dataURItoBlob(dataURI: string) {
   var mime = dataURI.split(',')[0].split(':')[1].split(';')[0];
   var binary = atob(dataURI.split(',')[1]);
@@ -65,7 +59,7 @@ const ConnectionProvider: React.FC = ({ children }) => {
     if (!connection) return;
     const { startMsg, updateMsgs } = formatMessage(message);
 
-    addMessage(startMsg);
+    addMessage(startMsg, true);
     connection.send(await encrypt(startMsg)); 
     for (let updateMsg of updateMsgs) {
       connection.send(await encrypt(updateMsg));
@@ -104,7 +98,7 @@ const ConnectionProvider: React.FC = ({ children }) => {
     }
     const handleData = async (encrypted: any) => {
       const message = await decrypt(encrypted);
-      addMessage(message);
+      addMessage(message, false);
     };
     connection.on('data', handleData);
     return () => {
