@@ -1,8 +1,8 @@
-import React, { useState, useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useCallback } from 'react';
 import styled from 'styled-components';
 import QRCode from 'react-qr-code';
 import QRReader from 'react-qr-reader'
-import useConnection from '../hooks/useConnection';
+import useSession from '../hooks/useSession';
 
 const Wrapper = styled.div`
   display: flex;
@@ -32,14 +32,15 @@ const Content = styled.div`
 `;
 
 const Welcome: React.FC<{}> = () => {
-  const { connect, clientInfo } = useConnection();
+  const { connect, connectInfo } = useSession();
   const [mode, setMode] = useState<'view' | 'scan'>('view');
 
   const onScan = useCallback(
     (result) => {
       if (result) {
         setMode('view');
-        connect(JSON.parse(result));
+        const { id, secret } = JSON.parse(result);
+        connect(id, secret);
       }
     },
     [],
@@ -52,9 +53,10 @@ const Welcome: React.FC<{}> = () => {
         <Button active={mode==='scan'} onClick={() => setMode('scan')}>Scan</Button>
       </Header>
       <Content>
+        {JSON.stringify(connectInfo)}
         {mode === 'view' && (
           <QRCode
-            value={JSON.stringify(clientInfo)}
+            value={JSON.stringify(connectInfo)}
             size={300}
           />
         )}

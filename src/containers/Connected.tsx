@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import styled from 'styled-components';
-import useConnection from '../hooks/useConnection';
+import useSession, { State } from '../hooks/useSession';
 import Message from '../components/Message';
 import ComposeMessage from '../types/ComposeMessage';
 import ComposeBar from '../components/ComposeBar';
@@ -22,7 +22,7 @@ const Loading = styled.div`
 
 
 const Connected: React.FC<{}> = () => {
-  const { send, messages } = useConnection();
+  const { send, messages, state } = useSession();
   const [currentMessage, setCurrentMessage] = useState<ComposeMessage>({
     files: [],
     text: '',
@@ -48,7 +48,9 @@ const Connected: React.FC<{}> = () => {
           <Loading>Loading {Math.round(message.current / message.length * 100)}%</Loading>
         )))}
       </MessageList>
-      <ComposeBar onSend={onSend} message={currentMessage} setMessage={setCurrentMessage} />
+      { state === State.CONNECTED && (
+        <ComposeBar onSend={onSend} message={currentMessage} setMessage={setCurrentMessage} />
+      )}
     </Wrapper>
   );
 }

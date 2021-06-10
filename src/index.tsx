@@ -1,13 +1,13 @@
 import React from 'react';
 import { render } from 'react-dom';
-import { ConnectionProvider } from './contexts/ConnectionContext';
+import { SessionsProvider } from './contexts/SessionsContext';
 import App from './App';
 
 const root = document.getElementById('root');
 const app = (
-  <ConnectionProvider>
+  <SessionsProvider>
     <App />
-  </ConnectionProvider>
+  </SessionsProvider>
 );
 
 render(app, root);

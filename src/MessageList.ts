@@ -1,5 +1,5 @@
+import EventEmitter from 'eventemitter3';
 import { nanoid } from 'nanoid';
-import { useState, useCallback } from 'react';
 
 interface BaseRequest {
   type: string;
@@ -82,40 +82,48 @@ const updateMessage = (
   };
 };
 
-const useMessages = (postProcess: (input: any) => any) => {
-  const [messages, setMessage] = useState<Message[]>([]);
+class MessageList extends EventEmitter {
+  #messages: Message[] = [];
+  #postProcess: (a: any) => any;
 
-  const addMessage = useCallback((request: Request, self: boolean) => {
-    setMessage((current) => {
-      if (request.type === 'start-message') {
-        const message: IncompleteMessage = {
-          id: request.payload.id,
-          type: 'incomplete',
-          self,
-          length: request.payload.length,
-          current: 0,
-          parts: [],
-        };
-        return [
-          ...current,
-          message,
-        ];
-      }
+  constructor(postProces: (a: any) => any = (a) => a) {
+    super();
+    this.#postProcess = postProces;
+  }
 
-      if (request.type === 'update-message') {
-        return current.map(message => {
-          if (message.id !== request.payload.id) {
-            return message;
-          }
-          return updateMessage(message, request, postProcess);
-        });
-      }
+  get list() {
+    return this.#messages;
+  }
 
-      return current;
-    });
-  }, []);
+  addMessage = (request: Request, self: boolean) => {
+    if (request.type === 'start-message') {
+      const message: IncompleteMessage = {
+        id: request.payload.id,
+        type: 'incomplete',
+        self,
+        length: request.payload.length,
+        current: 0,
+        parts: [],
+      };
+      this.#messages = [
+        ...this.#messages,
+        message,
+      ];
+      this.emit('updated');
+    }
 
-  const formatMessage = (msg: any) => {
+    if (request.type === 'update-message') {
+      this.#messages = this.#messages.map(message => {
+        if (message.id !== request.payload.id) {
+          return message;
+        }
+        return updateMessage(message, request, this.#postProcess);
+      });
+      this.emit('updated');
+    }
+  };
+
+  formatMessage = (msg: any) => {
     const dataString = JSON.stringify(msg);
     const parts = chunkSubstr(dataString, 100000);
     const id = nanoid();
@@ -139,12 +147,6 @@ const useMessages = (postProcess: (input: any) => any) => {
       updateMsgs,
     };
   };
-
-  return {
-    messages,
-    addMessage,
-    formatMessage,
-  }
 };
 
-export default useMessages;
+export default MessageList;

@@ -1,20 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Welcome from './containers/Welcome';
 import Connected from './containers/Connected';
-import useConnection, { ConnectionStates } from './hooks/useConnection';
+import { SessionProvider } from './contexts/SessionContext';
+import useSessions from './hooks/useSessions';
+import Session from './containers/Session';
 
 const App: React.FC<{}> = () => {
-  const { state } = useConnection();
+  const { sessions, addSession } = useSessions();
 
-  if (state === ConnectionStates.WAITING) {
-    return <Welcome />
+  useEffect(() => {
+    if (sessions.length === 0) {
+      addSession()
+    }
+  }, [sessions.length]);
+
+  if (sessions.length === 0) {
+    return <div>Setting up</div>
   }
-  if (state === ConnectionStates.CONNECTED) {
-    return <Connected />
-  }
+
   return (
-    <div>Connected</div>
-  );
+    <>
+      {sessions.map((session) => (
+        <SessionProvider session={session}>
+          <Session />
+        </SessionProvider>
+      ))}
+    </>
+  )
 };
 
 export default App;
